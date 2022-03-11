@@ -3,70 +3,81 @@
 // fight function
 var fight = function(enemy) {
   console.log(enemy);
+  
+  var isPlayerTurn = true;
+
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  } 
 
   while(playerInfo.health > 0 && enemy.health > 0) {
 
+    if (isPlayerTurn) {
     // ask player if they want to fight or skip with function
-    if (fightOrSkip()) {
-      //if true - leave fight
-      break
+      if (fightOrSkip()) {
+        //if true - leave fight
+        break
+      }
+        // This block of code is conditional statements replaced with fightOrSkip function
+                // ask player if they'd like to fight or run
+                // var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+                
+                // // check if player wants to skip
+                // if (promptFight === "skip" || promptFight === "SKIP") {
+                //   // confirm player wants to skip
+                //   var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+                //   // if yes (true), leave fight
+                //   if (confirmSkip) {
+                //     window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+                //     // subtract money from playerInfo.money for skipping
+                //     playerInfo.money = Math.max(0, playerInfo.money - 10);
+                //     console.log(playerInfo.name + " has " + playerInfo.money + " dollars.");
+                //     break;
+                //   }
+                // }
+
+      // generate random damage value based on players attack power and deduct from enemy health
+      var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
+
+      enemy.health = Math.max(0, enemy.health - damage);
+
+      console.log(
+        playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
+      );
+
+      // check enemy's health
+      if (enemy.health <= 0) {
+        window.alert(enemy.name + " has died!");
+
+        //award player money for defeating enemy
+        playerInfo.money = playerInfo.money + 20;
+        //leave while loop since enemy is defeated
+        break;
+      } else {
+        window.alert(enemy.name + " still has " + enemy.health + " health left.");
+      }
     }
-      // This block of code is conditional statements replaced with fightOrSkip function
-              // ask player if they'd like to fight or run
-              // var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
-              
-              // // check if player wants to skip
-              // if (promptFight === "skip" || promptFight === "SKIP") {
-              //   // confirm player wants to skip
-              //   var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+    else {
+      // generate random damage value based on enemy attack power and deduct from player health
+      var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
-              //   // if yes (true), leave fight
-              //   if (confirmSkip) {
-              //     window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-              //     // subtract money from playerInfo.money for skipping
-              //     playerInfo.money = Math.max(0, playerInfo.money - 10);
-              //     console.log(playerInfo.name + " has " + playerInfo.money + " dollars.");
-              //     break;
-              //   }
-              // }
+      playerInfo.health = Math.max(0, playerInfo.health - damage);
+      
+      console.log(
+        enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
+      );
 
-    // generate random damage value based on players attack power and deduct from enemy health
-    var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
-
-    enemy.health = Math.max(0, enemy.health - damage);
-
-    console.log(
-      playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
-    );
-
-    // check enemy's health
-    if (enemy.health <= 0) {
-      window.alert(enemy.name + " has died!");
-
-      //award player money for defeating enemy
-      playerInfo.money = playerInfo.money + 20;
-      //leave while loop since enemy is defeated
-      break;
-    } else {
-      window.alert(enemy.name + " still has " + enemy.health + " health left.");
+      // check player's health
+      if (playerInfo.health <= 0) {
+        window.alert(playerInfo.name + " has died!");
+        break;
+      } else {
+        window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
+      }
     }
-
-    // generate random damage value based on enemy attack power and deduct from player health
-    var damage = randomNumber(enemy.attack - 3, enemy.attack);
-
-    playerInfo.health = Math.max(0, playerInfo.health - damage);
-    
-    console.log(
-      enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
-    );
-
-    // check player's health
-    if (playerInfo.health <= 0) {
-      window.alert(playerInfo.name + " has died!");
-      break;
-    } else {
-      window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
-    }
+    // switch turn order by reversing isPlayerTurn boolean
+    isPlayerTurn = !isPlayerTurn;
   } //end of while loop
 }; // end of fight function
 
